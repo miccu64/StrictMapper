@@ -1,3 +1,5 @@
+using StrictMapper.Interfaces;
+
 namespace StrictMapper.Models;
 
 public record MapperType : IEqualityComparer<MapperType>
@@ -15,11 +17,11 @@ public record MapperType : IEqualityComparer<MapperType>
     {
         if (ReferenceEquals(x, y))
             return true;
-        if (x is null) 
+        if (x is null)
             return false;
-        if (y is null) 
+        if (y is null)
             return false;
-        if (x.GetType() != y.GetType()) 
+        if (x.GetType() != y.GetType())
             return false;
         return x.InType == y.InType && x.OutType == y.OutType;
     }
@@ -27,5 +29,10 @@ public record MapperType : IEqualityComparer<MapperType>
     public int GetHashCode(MapperType obj)
     {
         return HashCode.Combine(obj.InType, obj.OutType);
+    }
+
+    public override string ToString()
+    {
+        return $"{nameof(IMapper<,>)}<{InType}, {OutType}>";
     }
 }

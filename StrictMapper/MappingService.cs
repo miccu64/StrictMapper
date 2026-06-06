@@ -1,11 +1,18 @@
+using StrictMapper.Exceptions;
 using StrictMapper.Interfaces;
+using StrictMapper.Models;
 
 namespace StrictMapper;
 
-public class MappingService : IMappingService
+public static class MappingService // : IMappingService
 {
-    public TDest Map<TSource, TDest>(TSource source)
+    // TODO: move away from static
+    public static TDest Map<TSource, TDest>(TSource source)
     {
-        throw new NotImplementedException();
+        MapperType mapperType = new(typeof(TSource), typeof(TDest));
+        if (!Initializer.mappings.TryGetValue(mapperType, out IMapper<dynamic, dynamic> mapper))
+            throw new MissingMapperException(mapperType);
+
+        return mapper.Map(source);
     }
 }

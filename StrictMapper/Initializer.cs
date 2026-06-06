@@ -6,7 +6,7 @@ namespace StrictMapper;
 
 public static class Initializer
 {
-    private static Dictionary<MapperType, IMapper<dynamic, dynamic>> mappings = new();
+    public static readonly Dictionary<MapperType, IMapper<dynamic, dynamic>> mappings = new();
 
     public static void Initialize(Assembly assembly)
     {
