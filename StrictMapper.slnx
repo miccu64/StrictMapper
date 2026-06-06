@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="StrictMapper.Tests.Unit/StrictMapper.Tests.Unit.csproj" />
   <Project Path="StrictMapper/StrictMapper.csproj" />
 </Solution>

@@ -1,3 +1,4 @@
+using System.Reflection;
 using StrictMapper.Interfaces;
 using StrictMapper.Models;
 
@@ -7,12 +8,12 @@ public static class Initializer
 {
     private static Dictionary<MapperType, IMapper<dynamic, dynamic>> mappings = new();
 
-    public static void Initialize(Type type)
+    public static void Initialize(Assembly assembly)
     {
-        List<Type> mappers = type.Assembly.GetTypes()
+        List<Type> mappers = assembly.GetTypes()
             .Where(x => !x.IsAbstract && x.IsClass && x.GetInterface(nameof(IMapper<,>)) == typeof(IMapper<,>))
             .ToList();
-        
+
         foreach (Type mapper in mappers)
         {
             MapperType mapperType = new MapperType(mapper.GetGenericArguments()[0], mapper.GetGenericArguments()[1]);
