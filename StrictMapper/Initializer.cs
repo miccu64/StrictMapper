@@ -10,17 +10,23 @@ public static class Initializer
 
     public static void Initialize(Assembly assembly)
     {
-        const string mapperName = nameof(IMapper<,>);
-        Type mapperType = typeof(IMapper<,>);
-        
-        List<Type> mappers = assembly.GetTypes()
-            .Where(x => !x.IsAbstract && x.IsClass && x.GetInterface(mapperName) == mapperType)
+        var mappers = assembly.GetTypes()
+            .Where(t => !t.IsAbstract && !t.IsInterface)
+            .Select(t => new
+            {
+                Type = t,
+                Interface = t.GetInterfaces()
+                    .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapper<,>))
+            })
+            .Where(x => x.Interface != null)
             .ToList();
 
-        foreach (Type mapper in mappers)
+        foreach (var mapper in mappers)
         {
-            Type[] genericArguments = mapper.GetGenericArguments();
+            Type[] genericArguments = mapper.Interface!.GetGenericArguments();
             MapperType mapperTypeKey = new(genericArguments[0], genericArguments[1]);
+
+            // TODO: duplicate checks
             mappings.TryAdd(mapperTypeKey, mapper);
         }
     }
