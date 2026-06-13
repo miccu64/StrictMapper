@@ -3,18 +3,12 @@ using StrictMapper.Tests.Unit.Models;
 
 namespace StrictMapper.Tests.Unit;
 
-public class Tests
+public class UnknownMapperTests
 {
     [SetUp]
     public void Setup()
     {
         Initializer.Initialize(GetType().Assembly);
-    }
-
-    [Test]
-    public void ShouldNotThrowAfterRegister()
-    {
-        Assert.Pass();
     }
 
     [Test]
